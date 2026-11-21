@@ -1,0 +1,1262 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Educational Quest — Interactive School Trivia</title>
+    <!-- Tailwind CSS for responsive layout & utilities -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Fredoka for playful headings, Plus Jakarta Sans for crisp readability -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Font Awesome for crisp subject & UI icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <title>Responsive Web Design Layout</title>
+
+<style>
+        /* Custom Fonts & Base Styling */
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: linear-gradient(135deg, #EEF2FF 0%, #E0E7FF 45%, #F0FDF4 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+            color: #1E293B;
+        }
+
+        h1, h2, h3, .font-display {
+            font-family: 'Fredoka', sans-serif;
+        }
+
+        /* Floating Background Shapes for Classroom Vibe */
+        .bg-shape {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(60px);
+            z-index: 0;
+            pointer-events: none;
+            opacity: 0.55;
+            animation: floatSlow 12s ease-in-out infinite alternate;
+        }
+
+        @keyframes floatSlow {
+            0% { transform: translate(0, 0) scale(1); }
+            100% { transform: translate(25px, -30px) scale(1.08); }
+        }
+
+        /* Tactile 3D-style Game Buttons */
+        .btn-game {
+            transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 4px 0 rgba(15, 23, 42, 0.14);
+        }
+        .btn-game:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 0 rgba(15, 23, 42, 0.16);
+        }
+        .btn-game:active:not(:disabled) {
+            transform: translateY(2px);
+            box-shadow: 0 1px 0 rgba(15, 23, 42, 0.16);
+        }
+
+        /* Subject Card Selection Ring */
+        .subject-card {
+            transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        .subject-card:hover {
+            transform: translateY(-4px);
+        }
+        .subject-card.selected {
+            transform: translateY(-4px) scale(1.02);
+            box-shadow: 0 12px 24px -6px rgba(79, 70, 229, 0.28);
+        }
+
+        /* Option Button Animations */
+        .option-btn {
+            transition: all 0.18s ease;
+            box-shadow: 0 3px 0 #CBD5E1;
+        }
+        .option-btn:hover:not(:disabled) {
+            transform: translateY(-2px);
+            border-color: #6366F1;
+            background-color: #EEF2FF;
+            box-shadow: 0 5px 0 #A5B4FC;
+        }
+        .option-btn:active:not(:disabled) {
+            transform: translateY(2px);
+            box-shadow: 0 1px 0 #A5B4FC;
+        }
+
+        /* Animations for Feedback */
+        @keyframes popIn {
+            0% { opacity: 0; transform: scale(0.92) translateY(10px); }
+            100% { opacity: 1; transform: scale(1) translateY(0); }
+        }
+        .animate-pop {
+            animation: popIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            20% { transform: translateX(-6px); }
+            40% { transform: translateX(6px); }
+            60% { transform: translateX(-4px); }
+            80% { transform: translateX(4px); }
+        }
+        .animate-shake {
+            animation: shake 0.4s ease-in-out;
+        }
+
+        /* Confetti Particle Canvas */
+        #confetti-canvas {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 50;
+        }
+
+        * {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial;
+  padding: 10px;
+  background: #f1f1f1;
+}
+
+
+ .header {
+            background-color: #e6f0f5;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .header img {
+            width: 105px;
+            height: 105px;
+            object-fit: cover;
+            vertical-align: middle;
+            border-radius: 100%;
+        }
+
+        .header h1 {
+            display: inline-block;
+            margin-left: 10px;
+            font-size: 30px;
+        }
+
+        .header p {
+            margin: 5px;
+        }
+
+/* Style the top navigation bar */
+.topnav {
+  overflow: hidden;
+  background-color: #333;
+}
+
+/* Style the topnav links */
+.topnav a {
+  float: left;
+  display: block;
+  color: #f2f2f2;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+
+/* Change color on hover */
+.topnav a:hover {
+  background-color: #ddd;
+  color: black;
+}
+
+/* Create two unequal columns that floats next to each other */
+/* Left column */
+.leftcolumn {   
+  float: left;
+  width: 100%;
+}
+
+/* Right column */
+.rightcolumn {
+  float: left;
+  width: 0%;
+  background-color: #f1f1f1;
+  padding-left: 20px;
+}
+
+/* Fake image */
+.fakeimg {
+  background-color: #aaa;
+  width: 100%;
+  padding: 20px;
+}
+
+/* Add a card effect for articles */
+.card {
+  background-color: white;
+  padding: 20px;
+  margin-top: 20px;
+}
+
+/* Clear floats after the columns */
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+/* Footer */
+.footer {
+  padding: 20px;
+  text-align: center;
+  background: #ddd;
+  margin-top: 20px;
+}
+
+/* Responsive layout - when the screen is less than 800px wide, make the two columns stack on top of each other instead of next to each other */
+
+@media screen and (max-width: 800px) {
+  .leftcolumn, .rightcolumn {   
+    width: 100%;
+    padding: 0;
+  }
+}
+
+
+
+/* Responsive layout - when the screen is less than 400px wide, make the navigation links stack on top of each other instead of next to each other */
+
+@media screen and (max-width: 400px) {
+  .topnav a {
+    float: none;
+    width: 100%;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div class="header">
+<header class="header">
+    <center>
+        <img src="logopic.jpg" alt="Resort Logo">
+        <h1>EA Quest Game</h1>
+        <p>Discover the Best Games</p>
+    </center>
+    </header>
+</div>
+
+
+<div class="topnav">
+  <a href="file:///C:/Users/ACLC/Desktop/JAVA%20TECH/SubPage1.html">About me</a>
+  <a href="file:///C:/Users/ACLC/Desktop/JAVA%20TECH/SubPage2.html">About you</a>
+  <a href="#">About hers</a>
+  <a href="#" style="float:right">About him</a>
+</div>
+
+
+<div class="row">
+  <div class="leftcolumn">
+    <div class="card">
+      <body class="antialiased selection:bg-indigo-200 selection:text-indigo-900 flex flex-col">
+
+    <!-- Decorative Soft Background Blobs -->
+    <div class="bg-shape bg-indigo-300 w-72 h-72 -top-10 -left-10"></div>
+    <div class="bg-shape bg-emerald-200 w-80 h-80 bottom-10 -right-10" style="animation-delay: -4s;"></div>
+    <div class="bg-shape bg-amber-200 w-64 h-64 top-1/2 left-1/3" style="animation-delay: -8s;"></div>
+
+    <!-- Confetti Overlay Canvas -->
+    <canvas id="confetti-canvas"></canvas>
+
+    <!-- Top Navigation Bar -->
+    <header class="relative z-10 w-full max-w-5xl mx-auto px-4 pt-4 pb-2 flex items-center justify-between">
+        <button onclick="returnToMenu()" class="flex items-center gap-2.5 group focus:outline-none" title="Return to Main Menu">
+            <div class="w-11 h-11 rounded-2xl bg-gradient-to-br from-indigo-600 to-violet-600 text-white flex items-center justify-center shadow-md group-hover:scale-105 transition-transform">
+                <i class="fa-solid fa-graduation-cap text-xl"></i>
+            </div>
+            <div class="text-left">
+                <span class="font-display text-2xl font-bold tracking-tight text-slate-800 block leading-none">Edu<span class="text-indigo-600">Quest</span></span>
+                <span class="text-[11px] font-bold uppercase tracking-wider text-slate-400">Classroom Challenge</span>
+            </div>
+        </button>
+
+        <div class="flex items-center gap-2 sm:gap-3">
+            <!-- Sound Toggle Button -->
+            <button id="sound-toggle-btn" onclick="toggleSound()" aria-label="Toggle Sound Effects"
+                class="btn-game bg-white hover:bg-slate-50 text-slate-700 border-2 border-slate-200 px-3.5 py-2 rounded-xl font-semibold text-sm flex items-center gap-2">
+                <i id="sound-icon" class="fa-solid fa-volume-high text-indigo-600"></i>
+                <span id="sound-label" class="hidden sm:inline">Sound On</span>
+            </button>
+
+            <!-- Quit / Home Button (visible during quiz) -->
+            <button id="home-nav-btn" onclick="returnToMenu()"
+                class="hidden btn-game bg-white hover:bg-rose-50 text-slate-600 hover:text-rose-600 border-2 border-slate-200 hover:border-rose-200 px-3.5 py-2 rounded-xl font-semibold text-sm flex items-center gap-2">
+                <i class="fa-solid fa-house"></i>
+                <span class="hidden sm:inline">Subjects</span>
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Content Container -->
+    <main class="relative z-10 flex-1 w-full max-w-4xl mx-auto px-4 py-4 sm:py-6 flex flex-col justify-center">
+
+        <!-- ==================== SCREEN 1: SETUP / LOBBY ==================== -->
+        <section id="setup-screen" class="animate-pop bg-white/90 backdrop-blur-md border-2 border-white rounded-3xl shadow-xl p-5 sm:p-8">
+            <div class="text-center max-w-xl mx-auto mb-6">
+                <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-indigo-100 text-indigo-700 text-xs font-extrabold uppercase tracking-wider mb-2">
+                    <i class="fa-solid fa-sparkles"></i> Learn • Compete • Master
+                </span>
+                <h1 class="text-3xl sm:text-4xl font-bold text-slate-800 mb-2">Pick Your Challenge!</h1>
+                <p class="text-slate-500 text-sm sm:text-base">Choose a school subject and grade difficulty to begin your 8-question classroom quest.</p>
+            </div>
+
+            <!-- Step 1: Choose Subject -->
+            <div class="mb-6">
+                <label class="block text-xs font-extrabold uppercase tracking-wider text-slate-400 mb-3">
+                    1. Select School Subject
+                </label>
+                <div id="subject-grid" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
+                    <!-- Populated via JS -->
+                </div>
+            </div>
+
+            <!-- Step 2: Choose Grade Difficulty -->
+            <div class="mb-7">
+                <label class="block text-xs font-extrabold uppercase tracking-wider text-slate-400 mb-3">
+                    2. Select Grade Level
+                </label>
+                <div id="difficulty-grid" class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                    <!-- Populated via JS -->
+                </div>
+            </div>
+
+            <!-- Inline Toast Notification (replaces alert()) -->
+            <div id="setup-toast" class="hidden mb-4 p-3 rounded-xl bg-amber-50 border border-amber-200 text-amber-800 text-sm font-semibold text-center"></div>
+
+            <!-- Start Button -->
+            <div class="flex flex-col sm:flex-row items-center justify-between gap-4 pt-2 border-t border-slate-100">
+                <div class="flex items-center gap-4 text-xs sm:text-sm text-slate-500 font-medium">
+                    <span><i class="fa-solid fa-circle-question text-indigo-500 mr-1"></i> 8 Questions</span>
+                    <span><i class="fa-solid fa-stopwatch text-amber-500 mr-1"></i> 20s Timer</span>
+                    <span><i class="fa-solid fa-fire text-orange-500 mr-1"></i> Streak Bonus</span>
+                </div>
+                <button onclick="startQuiz()"
+                    class="w-full sm:w-auto btn-game bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white font-display text-lg font-bold px-8 py-3.5 rounded-2xl flex items-center justify-center gap-2.5">
+                    <span>Start Quiz</span>
+                    <i class="fa-solid fa-play text-sm"></i>
+                </button>
+            </div>
+        </section>
+
+        <!-- ==================== SCREEN 2: ACTIVE QUIZ ==================== -->
+        <section id="quiz-screen" class="hidden flex-col gap-4">
+
+            <!-- Top HUD: Subject Badge, Score, Streak, Timer -->
+            <div class="bg-white/95 backdrop-blur-md border-2 border-white rounded-2xl shadow-md p-3.5 sm:px-6 flex flex-wrap items-center justify-between gap-3">
+                <!-- Subject & Difficulty Pill -->
+                <div class="flex items-center gap-2.5">
+                    <div id="hud-subject-icon" class="w-10 h-10 rounded-xl bg-indigo-100 text-indigo-600 flex items-center justify-center text-lg">
+                        <i class="fa-solid fa-atom"></i>
+                    </div>
+                    <div>
+                        <div id="hud-subject-name" class="font-display font-bold text-slate-800 leading-tight">Science</div>
+                        <div id="hud-difficulty-name" class="text-xs font-bold text-slate-400">Middle School</div>
+                    </div>
+                </div>
+
+                <!-- Center Stats: Score & Streak -->
+                <div class="flex items-center gap-3 sm:gap-5">
+                    <!-- Score Counter -->
+                    <div class="bg-slate-50 border border-slate-200/80 px-3.5 py-1.5 rounded-xl text-center">
+                        <div class="text-[10px] font-extrabold uppercase tracking-wider text-slate-400">Score</div>
+                        <div id="hud-score" class="font-display font-bold text-lg text-indigo-600 leading-tight">0</div>
+                    </div>
+
+                    <!-- Streak Counter -->
+                    <div id="streak-badge" class="bg-orange-50 border border-orange-200/80 px-3.5 py-1.5 rounded-xl text-center transition-transform">
+                        <div class="text-[10px] font-extrabold uppercase tracking-wider text-orange-500">Streak</div>
+                        <div class="font-display font-bold text-lg text-orange-600 leading-tight flex items-center justify-center gap-1">
+                            <i class="fa-solid fa-fire text-sm"></i>
+                            <span id="hud-streak">0</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Circular / Numeric Timer -->
+                <div class="flex items-center gap-2">
+                    <div id="timer-box" class="bg-emerald-50 border-2 border-emerald-200 text-emerald-700 px-3.5 py-1.5 rounded-xl flex items-center gap-2 transition-colors">
+                        <i class="fa-solid fa-clock text-sm"></i>
+                        <span id="hud-timer" class="font-display font-bold text-lg tabular-nums">20s</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Question Progress Bar -->
+            <div class="w-full bg-white/80 rounded-full h-3 p-0.5 shadow-inner">
+                <div id="progress-bar" class="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 h-full rounded-full transition-all duration-500" style="width: 12.5%"></div>
+            </div>
+
+            <!-- Main Question Card -->
+            <div id="question-card" class="bg-white border-2 border-white rounded-3xl shadow-xl p-5 sm:p-8">
+                <div class="flex items-center justify-between mb-3">
+                    <span id="question-counter" class="text-xs font-extrabold uppercase tracking-wider text-indigo-600 bg-indigo-50 px-3 py-1 rounded-full">
+                        Question 1 of 8
+                    </span>
+                    <span id="points-hint" class="text-xs font-semibold text-slate-400">
+                        +100 pts + Speed Bonus
+                    </span>
+                </div>
+
+                <!-- Question Text -->
+                <h2 id="question-text" class="text-xl sm:text-2xl font-bold text-slate-800 leading-snug mb-6">
+                    Loading question...
+                </h2>
+
+                <!-- 4 Answer Options Grid -->
+                <div id="options-grid" class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+                    <!-- Populated via JS -->
+                </div>
+
+                <!-- Immediate Feedback & Explanation Drawer -->
+                <div id="feedback-box" class="hidden mt-6 rounded-2xl p-4 sm:p-5 border-2 animate-pop">
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                        <div class="flex items-start gap-3.5">
+                            <div id="feedback-icon" class="w-10 h-10 rounded-xl flex-shrink-0 flex items-center justify-center text-xl mt-0.5">
+                                <i class="fa-solid fa-check"></i>
+                            </div>
+                            <div>
+                                <div class="flex items-center gap-2 flex-wrap">
+                                    <h3 id="feedback-title" class="font-display font-bold text-lg">Awesome Job!</h3>
+                                    <span id="feedback-points" class="text-xs font-extrabold px-2.5 py-0.5 rounded-full bg-white/80"></span>
+                                </div>
+                                <p id="feedback-explanation" class="text-sm mt-1 leading-relaxed">
+                                    Explanation goes here.
+                                </p>
+                            </div>
+                        </div>
+
+                        <button id="next-btn" onclick="nextQuestion()"
+                            class="btn-game flex-shrink-0 bg-slate-900 hover:bg-slate-800 text-white font-display font-bold px-6 py-3 rounded-xl flex items-center justify-center gap-2">
+                            <span id="next-btn-text">Next Question</span>
+                            <i class="fa-solid fa-arrow-right text-sm"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== SCREEN 3: SUMMARY & REPORT CARD ==================== -->
+        <section id="summary-screen" class="hidden animate-pop bg-white/95 backdrop-blur-md border-2 border-white rounded-3xl shadow-xl p-6 sm:p-9 text-center">
+            <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-indigo-100 text-indigo-700 text-xs font-extrabold uppercase tracking-wider mb-3">
+                <i class="fa-solid fa-award"></i> Quest Complete
+            </div>
+
+            <h1 id="summary-headline" class="text-3xl sm:text-4xl font-bold text-slate-800 mb-1">Outstanding Work!</h1>
+            <p id="summary-subtext" class="text-slate-500 text-sm sm:text-base mb-6">You completed the Science — Middle School challenge.</p>
+
+            <!-- Report Card Grade Badge -->
+            <div class="flex flex-col items-center justify-center mb-7">
+                <div id="grade-badge" class="w-28 h-28 rounded-3xl bg-gradient-to-br from-emerald-400 to-teal-600 text-white flex flex-col items-center justify-center shadow-lg transform -rotate-2 border-4 border-white">
+                    <span class="text-[11px] font-extrabold uppercase tracking-widest opacity-90">Grade</span>
+                    <span id="summary-grade" class="font-display text-5xl font-bold leading-none mt-0.5">A+</span>
+                </div>
+            </div>
+
+            <!-- 4 Key Metrics Grid -->
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 mb-7">
+                <div class="bg-slate-50 border border-slate-200/80 rounded-2xl p-3.5">
+                    <div class="text-xs font-bold text-slate-400 uppercase">Total Score</div>
+                    <div id="summary-score" class="font-display text-2xl font-bold text-indigo-600 mt-0.5">0</div>
+                </div>
+                <div class="bg-slate-50 border border-slate-200/80 rounded-2xl p-3.5">
+                    <div class="text-xs font-bold text-slate-400 uppercase">Accuracy</div>
+                    <div id="summary-accuracy" class="font-display text-2xl font-bold text-emerald-600 mt-0.5">0%</div>
+                </div>
+                <div class="bg-slate-50 border border-slate-200/80 rounded-2xl p-3.5">
+                    <div class="text-xs font-bold text-slate-400 uppercase">Correct</div>
+                    <div id="summary-correct" class="font-display text-2xl font-bold text-slate-800 mt-0.5">0/8</div>
+                </div>
+                <div class="bg-slate-50 border border-slate-200/80 rounded-2xl p-3.5">
+                    <div class="text-xs font-bold text-slate-400 uppercase">Best Streak</div>
+                    <div id="summary-streak" class="font-display text-2xl font-bold text-orange-500 mt-0.5">0</div>
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="flex flex-col sm:flex-row items-center justify-center gap-3.5">
+                <button onclick="replayQuiz()"
+                    class="w-full sm:w-auto btn-game bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white font-display text-lg font-bold px-7 py-3.5 rounded-2xl flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-rotate-right"></i>
+                    <span>Play Again</span>
+                </button>
+                <button onclick="returnToMenu()"
+                    class="w-full sm:w-auto btn-game bg-white hover:bg-slate-50 text-slate-700 border-2 border-slate-200 font-display text-lg font-bold px-7 py-3.5 rounded-2xl flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-grid-2"></i>
+                    <span>Switch Subject</span>
+                </button>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="relative z-10 text-center py-3 text-xs text-slate-400 font-medium">
+        EduQuest Classroom Edition • Designed for Interactive Learning
+    </footer>
+
+    <script>
+        /* ==========================================================================
+           1. WEB AUDIO API SYNTHESIZER (Zero External Audio Files Required)
+           ========================================================================== */
+        class SoundEngine {
+            constructor() {
+                this.enabled = true;
+                this.ctx = null;
+            }
+
+            init() {
+                if (!this.ctx) {
+                    const AudioCtx = window.AudioContext || window.webkitAudioContext;
+                    if (AudioCtx) {
+                        this.ctx = new AudioCtx();
+                    }
+                }
+                if (this.ctx && this.ctx.state === 'suspended') {
+                    this.ctx.resume();
+                }
+            }
+
+            playTone(freq, type, duration, delay = 0, volume = 0.15) {
+                if (!this.enabled) return;
+                try {
+                    this.init();
+                    if (!this.ctx) return;
+
+                    const osc = this.ctx.createOscillator();
+                    const gain = this.ctx.createGain();
+                    const startTime = this.ctx.currentTime + delay;
+
+                    osc.type = type;
+                    osc.frequency.setValueAtTime(freq, startTime);
+
+                    gain.gain.setValueAtTime(0.001, startTime);
+                    gain.gain.exponentialRampToValueAtTime(volume, startTime + 0.02);
+                    gain.gain.exponentialRampToValueAtTime(0.001, startTime + duration);
+
+                    osc.connect(gain);
+                    gain.connect(this.ctx.destination);
+
+                    osc.start(startTime);
+                    osc.stop(startTime + duration + 0.02);
+                } catch (e) {
+                    // Fail silently if browser blocks autoplay
+                }
+            }
+
+            click() {
+                this.playTone(520, 'sine', 0.08, 0, 0.1);
+            }
+
+            correct() {
+                // Cheerful ascending major triad
+                this.playTone(523.25, 'triangle', 0.15, 0, 0.16);    // C5
+                this.playTone(659.25, 'triangle', 0.15, 0.08, 0.16); // E5
+                this.playTone(783.99, 'triangle', 0.28, 0.16, 0.18); // G5
+            }
+
+            wrong() {
+                // Gentle low two-tone buzz
+                this.playTone(240, 'sawtooth', 0.18, 0, 0.09);
+                this.playTone(190, 'sawtooth', 0.25, 0.12, 0.09);
+            }
+
+            tick() {
+                this.playTone(880, 'sine', 0.04, 0, 0.05);
+            }
+
+            fanfare() {
+                // Victory chord progression
+                const notes = [523.25, 659.25, 783.99, 1046.50];
+                notes.forEach((n, idx) => {
+                    this.playTone(n, 'triangle', 0.35, idx * 0.1, 0.16);
+                });
+            }
+        }
+
+        const sfx = new SoundEngine();
+
+        /* ==========================================================================
+           2. CURRICULUM QUESTION BANK (5 Subjects x 3 Difficulties x 8 Questions)
+           ========================================================================== */
+        const SUBJECTS = [
+            { id: 'math', name: 'Mathematics', icon: 'fa-calculator', color: 'blue', bg: 'bg-blue-100', text: 'text-blue-600', border: 'border-blue-500' },
+            { id: 'science', name: 'Science', icon: 'fa-flask', color: 'emerald', bg: 'bg-emerald-100', text: 'text-emerald-600', border: 'border-emerald-500' },
+            { id: 'history', name: 'History', icon: 'fa-landmark', color: 'amber', bg: 'bg-amber-100', text: 'text-amber-600', border: 'border-amber-500' },
+            { id: 'geography', name: 'Geography', icon: 'fa-earth-americas', color: 'teal', bg: 'bg-teal-100', text: 'text-teal-600', border: 'border-teal-500' },
+            { id: 'literature', name: 'Literature', icon: 'fa-book-open', color: 'purple', bg: 'bg-purple-100', text: 'text-purple-600', border: 'border-purple-500' }
+        ];
+
+        const DIFFICULTIES = [
+            { id: 'elementary', name: 'Elementary', grades: 'Grades 1–5', icon: 'fa-seedling', badge: 'bg-emerald-100 text-emerald-700' },
+            { id: 'middle', name: 'Middle School', grades: 'Grades 6–8', icon: 'fa-rocket', badge: 'bg-indigo-100 text-indigo-700' },
+            { id: 'high', name: 'High School', grades: 'Grades 9–12', icon: 'fa-brain', badge: 'bg-purple-100 text-purple-700' }
+        ];
+
+        const QUESTION_BANK = {
+            math: {
+                elementary: [
+                    { q: "What is 7 × 8?", options: ["54", "56", "64", "48"], answer: 1, exp: "7 groups of 8 equals 56 (7 × 8 = 56)." },
+                    { q: "How many sides does a hexagon have?", options: ["5", "6", "7", "8"], answer: 1, exp: "A hexagon is a polygon with 6 straight sides and 6 angles." },
+                    { q: "What fraction is equal to 0.5?", options: ["1/4", "1/3", "1/2", "2/5"], answer: 2, exp: "0.5 represents five-tenths (5/10), which simplifies to 1/2." },
+                    { q: "If a pizza has 8 slices and you eat 3, how many are left?", options: ["4", "5", "6", "3"], answer: 1, exp: "Subtracting the 3 eaten slices from 8 total slices leaves 5 slices." },
+                    { q: "What is the perimeter of a square with sides of 5 cm?", options: ["10 cm", "15 cm", "20 cm", "25 cm"], answer: 2, exp: "A square has 4 equal sides, so 5 cm × 4 = 20 cm." },
+                    { q: "Which number is an even prime number?", options: ["1", "2", "3", "4"], answer: 1, exp: "2 is the smallest prime number and the only even prime number." },
+                    { q: "How many minutes are in 2 hours?", options: ["90", "100", "120", "150"], answer: 2, exp: "One hour has 60 minutes, so 2 × 60 = 120 minutes." },
+                    { q: "What is 145 + 235?", options: ["370", "380", "390", "480"], answer: 1, exp: "145 + 235 = 380 (100+200=300, 45+35=80)." }
+                ],
+                middle: [
+                    { q: "Solve for x: 3x + 5 = 20", options: ["3", "4", "5", "6"], answer: 2, exp: "Subtract 5 from both sides (3x = 15), then divide by 3 to get x = 5." },
+                    { q: "What is the area of a triangle with base 10 cm and height 6 cm?", options: ["60 cm²", "30 cm²", "16 cm²", "36 cm²"], answer: 1, exp: "Area of a triangle = ½ × base × height = ½ × 10 × 6 = 30 cm²." },
+                    { q: "What is 25% of 160?", options: ["30", "40", "45", "50"], answer: 1, exp: "25% is one-quarter (1/4), and 160 ÷ 4 = 40." },
+                    { q: "What is the value of (-4) × (-6)?", options: ["-24", "-10", "10", "24"], answer: 3, exp: "Multiplying two negative numbers always produces a positive product: 24." },
+                    { q: "What is the mean (average) of 4, 8, 10, and 14?", options: ["8", "9", "10", "11"], answer: 1, exp: "Sum = 4 + 8 + 10 + 14 = 36. Divide by 4 numbers: 36 ÷ 4 = 9." },
+                    { q: "Simplify the expression: 2(3x + 4)", options: ["6x + 4", "5x + 6", "6x + 8", "6x + 2"], answer: 2, exp: "Using the distributive property: 2 × 3x + 2 × 4 = 6x + 8." },
+                    { q: "What is the square root of 144?", options: ["11", "12", "13", "14"], answer: 1, exp: "12 × 12 = 144, so √144 = 12." },
+                    { q: "If two angles in a triangle are 50° and 60°, what is the third angle?", options: ["60°", "70°", "80°", "90°"], answer: 1, exp: "Angles in a triangle always sum to 180°: 180 - (50 + 60) = 70°." }
+                ],
+                high: [
+                    { q: "What is the slope of the line y = -3x + 7?", options: ["7", "3", "-3", "-7"], answer: 2, exp: "In slope-intercept form y = mx + b, 'm' is the slope, which is -3." },
+                    { q: "In a right triangle with legs 6 and 8, what is the hypotenuse?", options: ["10", "12", "14", "100"], answer: 0, exp: "By the Pythagorean theorem: 6² + 8² = 36 + 64 = 100, and √100 = 10." },
+                    { q: "What is log₁₀(1000)?", options: ["2", "3", "10", "100"], answer: 1, exp: "10 raised to the power of 3 equals 1000 (10³ = 1000)." },
+                    { q: "What is the derivative of f(x) = x³?", options: ["x²", "2x²", "3x²", "3x³"], answer: 2, exp: "Using the power rule d/dx[xⁿ] = n·xⁿ⁻¹, the derivative of x³ is 3x²." },
+                    { q: "Factor completely: x² - 9", options: ["(x - 3)²", "(x + 3)²", "(x - 3)(x + 3)", "(x - 9)(x + 1)"], answer: 2, exp: "x² - 9 is a difference of squares: a² - b² = (a - b)(a + b)." },
+                    { q: "What is sin(90°)?", options: ["0", "0.5", "√2/2", "1"], answer: 3, exp: "On the unit circle, the y-coordinate at 90° (π/2 radians) is 1." },
+                    { q: "If f(x) = 2x² - 1, what is f(3)?", options: ["11", "17", "35", "18"], answer: 1, exp: "Substitute x = 3: 2(3²) - 1 = 2(9) - 1 = 18 - 1 = 17." },
+                    { q: "How many ways can 4 books be arranged on a shelf?", options: ["12", "16", "24", "32"], answer: 2, exp: "4 factorial (4!) = 4 × 3 × 2 × 1 = 24 unique arrangements." }
+                ]
+            },
+            science: {
+                elementary: [
+                    { q: "Which planet is closest to the Sun?", options: ["Venus", "Mars", "Mercury", "Earth"], answer: 2, exp: "Mercury is the innermost planet in our Solar System." },
+                    { q: "What gas do plants absorb from the air to make food?", options: ["Oxygen", "Carbon Dioxide", "Nitrogen", "Helium"], answer: 1, exp: "Plants use carbon dioxide, water, and sunlight during photosynthesis." },
+                    { q: "What are the three main states of matter?", options: ["Hot, Warm, Cold", "Solid, Liquid, Gas", "Rock, Water, Air", "Hard, Soft, Wet"], answer: 1, exp: "Matter commonly exists as solid, liquid, or gas." },
+                    { q: "Which organ pumps blood throughout the human body?", options: ["Lungs", "Brain", "Heart", "Stomach"], answer: 2, exp: "The heart is a muscular organ that circulates blood through blood vessels." },
+                    { q: "What force pulls objects toward the center of the Earth?", options: ["Magnetism", "Friction", "Gravity", "Electricity"], answer: 2, exp: "Gravity is the invisible force of attraction between masses." },
+                    { q: "Caterpillars transform into butterflies during which process?", options: ["Hibernation", "Metamorphosis", "Photosynthesis", "Evaporation"], answer: 1, exp: "Metamorphosis is the major body transformation insects undergo as they grow." },
+                    { q: "Which part of a plant absorbs water and nutrients from the soil?", options: ["Leaves", "Stem", "Roots", "Petals"], answer: 2, exp: "Roots anchor the plant and absorb water and minerals underground." },
+                    { q: "At what temperature does water freeze in Celsius?", options: ["0°C", "32°C", "50°C", "100°C"], answer: 0, exp: "Pure water freezes at 0°C (32°F) and boils at 100°C." }
+                ],
+                middle: [
+                    { q: "What is the powerhouse of a eukaryotic cell?", options: ["Nucleus", "Ribosome", "Mitochondrion", "Cell Wall"], answer: 2, exp: "Mitochondria generate most of the cell's chemical energy (ATP)." },
+                    { q: "What is the chemical symbol for Gold?", options: ["Go", "Gd", "Ag", "Au"], answer: 3, exp: "Au comes from 'aurum', the Latin word for gold." },
+                    { q: "Which type of rock is formed from cooled magma or lava?", options: ["Sedimentary", "Igneous", "Metamorphic", "Fossil"], answer: 1, exp: "Igneous rocks form when molten rock cools and solidifies." },
+                    { q: "What is Newton's First Law of Motion often called?", options: ["Law of Gravity", "Law of Inertia", "Law of Action-Reaction", "Law of Energy"], answer: 1, exp: "Inertia states that an object stays at rest or in uniform motion unless acted upon by a net force." },
+                    { q: "Which layer of Earth's atmosphere contains the ozone layer?", options: ["Troposphere", "Stratosphere", "Mesosphere", "Thermosphere"], answer: 1, exp: "The stratosphere houses the ozone layer, which absorbs harmful UV radiation." },
+                    { q: "What particles are found in the nucleus of an atom?", options: ["Protons and Electrons", "Neutrons and Electrons", "Protons and Neutrons", "Only Protons"], answer: 2, exp: "Protons (positive) and neutrons (neutral) form the dense atomic nucleus." },
+                    { q: "What type of energy is stored in a stretched rubber band?", options: ["Kinetic Energy", "Thermal Energy", "Elastic Potential Energy", "Sound Energy"], answer: 2, exp: "Stretching stores elastic potential energy that converts to kinetic energy when released." },
+                    { q: "Which blood vessels carry oxygen-rich blood away from the heart?", options: ["Veins", "Arteries", "Capillaries", "Valves"], answer: 1, exp: "Arteries carry blood away from the heart (remember: 'A' for Away)." }
+                ],
+                high: [
+                    { q: "Which macromolecule stores genetic information in living organisms?", options: ["Lipids", "Carbohydrates", "Nucleic Acids", "Proteins"], answer: 2, exp: "DNA and RNA are nucleic acids built from nucleotide monomers." },
+                    { q: "What is the pH of a neutral aqueous solution at 25°C?", options: ["0", "5", "7", "14"], answer: 2, exp: "A pH of 7 indicates equal concentrations of H⁺ and OH⁻ ions." },
+                    { q: "According to Ohm's Law, Voltage (V) equals:", options: ["I / R", "I × R", "R / I", "I² × R"], answer: 1, exp: "Ohm's Law states V = I × R (Voltage = Current × Resistance)." },
+                    { q: "During which phase of mitosis do sister chromatids separate?", options: ["Prophase", "Metaphase", "Anaphase", "Telophase"], answer: 2, exp: "In Anaphase ('A' for Apart), sister chromatids are pulled to opposite poles." },
+                    { q: "What type of chemical bond involves the sharing of electron pairs?", options: ["Ionic Bond", "Covalent Bond", "Metallic Bond", "Hydrogen Bond"], answer: 1, exp: "Covalent bonds form when nonmetal atoms share valence electrons." },
+                    { q: "What is the acceleration due to gravity near Earth's surface?", options: ["6.67 m/s²", "8.9 m/s²", "9.8 m/s²", "12.4 m/s²"], answer: 2, exp: "Standard gravity on Earth is approximately 9.8 m/s² downward." },
+                    { q: "Which organelle modifies, sorts, and packages proteins for secretion?", options: ["Golgi Apparatus", "Lysosome", "Vacuole", "Smooth ER"], answer: 0, exp: "The Golgi apparatus acts as the cell's post office for proteins and lipids." },
+                    { q: "What happens to the kinetic energy of an object if its velocity doubles?", options: ["It doubles", "It triples", "It quadruples", "It stays the same"], answer: 2, exp: "Since KE = ½mv², doubling velocity (2v)² increases kinetic energy by 4 times." }
+                ]
+            },
+            history: {
+                elementary: [
+                    { q: "Who was the first President of the United States?", options: ["Abraham Lincoln", "Thomas Jefferson", "George Washington", "John Adams"], answer: 2, exp: "George Washington served as the first U.S. President from 1789 to 1797." },
+                    { q: "In which country were the ancient pyramids of Giza built?", options: ["Greece", "Egypt", "Mexico", "India"], answer: 1, exp: "Ancient Egyptians built the Great Pyramids as tombs for pharaohs." },
+                    { q: "Who is famous for refusing to give up her bus seat in 1955?", options: ["Harriet Tubman", "Rosa Parks", "Susan B. Anthony", "Amelia Earhart"], answer: 1, exp: "Rosa Parks sparked the Montgomery Bus Boycott, a pivotal event in the Civil Rights Movement." },
+                    { q: "What ship carried the Pilgrims to North America in 1620?", options: ["Santa Maria", "Titanic", "Mayflower", "Endeavour"], answer: 2, exp: "The Mayflower sailed from England to Plymouth, Massachusetts in 1620." },
+                    { q: "Who was the first person to walk on the Moon?", options: ["Buzz Aldrin", "Neil Armstrong", "Yuri Gagarin", "John Glenn"], answer: 1, exp: "Neil Armstrong stepped onto the Moon on July 20, 1969, during Apollo 11." },
+                    { q: "Which ancient civilization created the Olympic Games?", options: ["Romans", "Egyptians", "Greeks", "Mayans"], answer: 2, exp: "The ancient Olympic Games began in Olympia, Greece around 776 BCE." },
+                    { q: "Who wrote the famous 'I Have a Dream' speech?", options: ["Malcolm X", "Frederick Douglass", "Martin Luther King Jr.", "Thurgood Marshall"], answer: 2, exp: "Dr. Martin Luther King Jr. delivered the speech during the 1963 March on Washington." },
+                    { q: "What holiday celebrates the adoption of the U.S. Declaration of Independence?", options: ["Memorial Day", "Labor Day", "Independence Day (July 4)", "Veterans Day"], answer: 2, exp: "The Declaration of Independence was adopted on July 4, 1776." }
+                ],
+                middle: [
+                    { q: "Which trade route connected China with the Mediterranean Sea?", options: ["Spice Trail", "Silk Road", "Amber Road", "Oregon Trail"], answer: 1, exp: "The Silk Road facilitated trade of silk, spices, paper, and ideas across Eurasia." },
+                    { q: "Who invented the movable-type printing press in Europe around 1440?", options: ["Leonardo da Vinci", "Johannes Gutenberg", "Galileo Galilei", "Isaac Newton"], answer: 1, exp: "Gutenberg's press revolutionized book production and literacy across Europe." },
+                    { q: "What was the period of rebirth in European art and learning called?", options: ["The Enlightenment", "The Renaissance", "The Industrial Age", "The Bronze Age"], answer: 1, exp: "The Renaissance ('rebirth') spanned roughly the 14th to 17th centuries." },
+                    { q: "Which ancient code of laws is famous for 'an eye for an eye'?", options: ["Magna Carta", "Code of Hammurabi", "Twelve Tables", "Justinian Code"], answer: 1, exp: "King Hammurabi of Babylon inscribed one of the earliest written legal codes." },
+                    { q: "In what year did World War II end?", options: ["1918", "1939", "1945", "1950"], answer: 2, exp: "World War II ended in 1945 following the surrenders of Germany and Japan." },
+                    { q: "Which document signed in 1215 limited the power of the English king?", options: ["Bill of Rights", "Magna Carta", "Treaty of Versailles", "Domesday Book"], answer: 1, exp: "King John signed the Magna Carta in 1215, establishing that even monarchs must obey the law." },
+                    { q: "Which empire built Machu Picchu in the Andes Mountains?", options: ["Aztec", "Maya", "Inca", "Olmec"], answer: 2, exp: "The Inca Empire constructed Machu Picchu in 15th-century Peru." },
+                    { q: "Who led the nonviolent independence movement in India against British rule?", options: ["Jawaharlal Nehru", "Mahatma Gandhi", "Subhas Chandra Bose", "Indira Gandhi"], answer: 1, exp: "Mahatma Gandhi championed peaceful civil disobedience (Satyagraha)." }
+                ],
+                high: [
+                    { q: "What event sparked the beginning of World War I in 1914?", options: ["Invasion of Poland", "Assassination of Archduke Franz Ferdinand", "Sinking of the Lusitania", "Russian Revolution"], answer: 1, exp: "The assassination of Archduke Franz Ferdinand in Sarajevo triggered European alliance treaties." },
+                    { q: "Which Enlightenment philosopher argued for natural rights: life, liberty, and property?", options: ["Thomas Hobbes", "John Locke", "Jean-Jacques Rousseau", "Voltaire"], answer: 1, exp: "John Locke's Two Treatises of Government heavily influenced modern democratic constitutions." },
+                    { q: "What was the primary goal of the Marshall Plan after WWII?", options: ["Contain communism in Asia", "Rebuild Western European economies", "Establish the United Nations", "Explore outer space"], answer: 1, exp: "The U.S. provided over $12 billion to help rebuild Western Europe after WWII." },
+                    { q: "Which dynasty built most of the existing Great Wall of China?", options: ["Qin Dynasty", "Han Dynasty", "Tang Dynasty", "Ming Dynasty"], answer: 3, exp: "While earlier walls existed, the Ming Dynasty (1368–1644) constructed the iconic stone fortifications." },
+                    { q: "What 1803 land deal doubled the size of the United States?", options: ["Gadsden Purchase", "Louisiana Purchase", "Alaska Purchase", "Treaty of Guadalupe Hidalgo"], answer: 1, exp: "President Thomas Jefferson purchased the Louisiana Territory from France for $15 million." },
+                    { q: "The Meiji Restoration of 1868 modernized which nation?", options: ["China", "Korea", "Japan", "Thailand"], answer: 2, exp: "The Meiji Restoration ended feudal rule in Japan and rapidly industrialized the country." },
+                    { q: "Which treaty ended World War I between Germany and the Allied Powers?", options: ["Treaty of Paris", "Treaty of Utrecht", "Treaty of Versailles", "Treaty of Ghent"], answer: 2, exp: "Signed in June 1919, the Treaty of Versailles imposed heavy reparations on Germany." },
+                    { q: "Who was the first female Prime Minister of the United Kingdom?", options: ["Theresa May", "Margaret Thatcher", "Queen Victoria", "Angela Merkel"], answer: 1, exp: "Margaret Thatcher served as UK Prime Minister from 1979 to 1990." }
+                ]
+            },
+            geography: {
+                elementary: [
+                    { q: "How many continents are there on Earth?", options: ["5", "6", "7", "8"], answer: 2, exp: "The 7 continents are Africa, Antarctica, Asia, Australia/Oceania, Europe, North America, and South America." },
+                    { q: "Which is the largest ocean on Earth?", options: ["Atlantic Ocean", "Indian Ocean", "Arctic Ocean", "Pacific Ocean"], answer: 3, exp: "The Pacific Ocean covers more than 30% of Earth's surface." },
+                    { q: "What is the capital city of France?", options: ["London", "Rome", "Paris", "Madrid"], answer: 2, exp: "Paris is the capital and most populous city of France." },
+                    { q: "Which imaginary line divides Earth into Northern and Southern Hemispheres?", options: ["Prime Meridian", "Equator", "Tropic of Cancer", "International Date Line"], answer: 1, exp: "The Equator is at 0° latitude around the middle of Earth." },
+                    { q: "In which continent is the Sahara Desert located?", options: ["Asia", "South America", "Africa", "Australia"], answer: 2, exp: "The Sahara is the world's largest hot desert, spanning North Africa." },
+                    { q: "Which country is both an island and a continent?", options: ["Greenland", "Madagascar", "Australia", "Iceland"], answer: 2, exp: "Australia is the smallest continent and the largest island nation." },
+                    { q: "What is the tallest mountain in the world above sea level?", options: ["K2", "Mount Kilimanjaro", "Mount Everest", "Mount Fuji"], answer: 2, exp: "Mount Everest in the Himalayas rises 8,849 meters (29,032 feet)." },
+                    { q: "Which river is the longest in Egypt?", options: ["Amazon River", "Nile River", "Mississippi River", "Yangtze River"], answer: 1, exp: "The Nile flows northward through northeastern Africa into the Mediterranean Sea." }
+                ],
+                middle: [
+                    { q: "What is the capital city of Japan?", options: ["Kyoto", "Osaka", "Tokyo", "Seoul"], answer: 2, exp: "Tokyo has been Japan's capital since 1868." },
+                    { q: "Which mountain range separates Europe from Asia?", options: ["The Alps", "The Andes", "The Ural Mountains", "The Rockies"], answer: 2, exp: "The Ural Mountains in Russia form the traditional boundary between Europe and Asia." },
+                    { q: "Which South American country has the largest rainforest?", options: ["Peru", "Colombia", "Brazil", "Argentina"], answer: 2, exp: "Around 60% of the Amazon Rainforest is located within Brazil." },
+                    { q: "What is the capital of Canada?", options: ["Toronto", "Vancouver", "Montreal", "Ottawa"], answer: 3, exp: "Ottawa, located in Ontario, is the federal capital of Canada." },
+                    { q: "Which strait separates Asia from North America?", options: ["Strait of Gibraltar", "Bering Strait", "Strait of Hormuz", "English Channel"], answer: 1, exp: "The Bering Strait lies between Russia and Alaska." },
+                    { q: "What is a ring-shaped coral reef enclosing a lagoon called?", options: ["Peninsula", "Isthmus", "Atoll", "Archipelago"], answer: 2, exp: "An atoll is a ring-shaped coral island or reef surrounding a central lagoon." },
+                    { q: "Which European country is shaped like a boot?", options: ["Spain", "Greece", "Italy", "Portugal"], answer: 2, exp: "The Italian Peninsula famously resembles a high-heeled boot kicking Sicily." },
+                    { q: "Through which city does the Prime Meridian (0° longitude) pass?", options: ["Paris, France", "Greenwich, London", "New York, USA", "Cairo, Egypt"], answer: 1, exp: "The Prime Meridian is defined at the Royal Observatory in Greenwich, London." }
+                ],
+                high: [
+                    { q: "Which tectonic boundary type forms mid-ocean ridges?", options: ["Convergent", "Divergent", "Transform", "Subduction"], answer: 1, exp: "At divergent boundaries, tectonic plates pull apart and magma rises to create new crust." },
+                    { q: "What is the only country in the world located on all four hemispheres?", options: ["Brazil", "Indonesia", "Kiribati", "Ecuador"], answer: 2, exp: "Kiribati's islands span both sides of the Equator and the 180th meridian." },
+                    { q: "Which desert is the driest non-polar desert on Earth?", options: ["Gobi Desert", "Atacama Desert", "Mojave Desert", "Kalahari Desert"], answer: 1, exp: "Chile's Atacama Desert lies in a double rain shadow and receives almost zero rainfall." },
+                    { q: "What is the capital city of Australia?", options: ["Sydney", "Melbourne", "Canberra", "Perth"], answer: 2, exp: "Canberra was purpose-built as Australia's capital as a compromise between Sydney and Melbourne." },
+                    { q: "Which river carries the largest volume of water in the world?", options: ["Nile", "Amazon", "Yangtze", "Congo"], answer: 1, exp: "The Amazon River discharges more water than the next seven largest rivers combined." },
+                    { q: "What is a narrow strip of land connecting two larger landmasses called?", options: ["Fjord", "Isthmus", "Delta", "Plateau"], answer: 1, exp: "Examples include the Isthmus of Panama connecting North and South America." },
+                    { q: "Which African lake is the largest by surface area?", options: ["Lake Tanganyika", "Lake Malawi", "Lake Victoria", "Lake Chad"], answer: 2, exp: "Lake Victoria borders Uganda, Kenya, and Tanzania and is the source of the White Nile." },
+                    { q: "What phenomenon causes winds in the Northern Hemisphere to deflect right?", options: ["El Niño", "Coriolis Effect", "Rain Shadow", "Albedo Effect"], answer: 1, exp: "Earth's rotation causes the Coriolis effect, deflecting moving air right in the north and left in the south." }
+                ]
+            },
+            literature: {
+                elementary: [
+                    { q: "Who wrote 'Charlie and the Chocolate Factory'?", options: ["J.K. Rowling", "Roald Dahl", "Dr. Seuss", "E.B. White"], answer: 1, exp: "Roald Dahl published the beloved story of Willy Wonka and Charlie Bucket in 1964." },
+                    { q: "In 'Charlotte's Web', what kind of animal is Wilbur?", options: ["A spider", "A pig", "A rat", "A sheep"], answer: 1, exp: "Wilbur is a pig saved by Fern and his clever spider friend Charlotte." },
+                    { q: "What do you call a story that is not real, made up from an author's imagination?", options: ["Biography", "Non-fiction", "Fiction", "Encyclopedia"], answer: 2, exp: "Fiction describes imaginative stories, whereas non-fiction is based on real facts." },
+                    { q: "Who wrote 'The Cat in the Hat' and 'Green Eggs and Ham'?", options: ["Shel Silverstein", "Dr. Seuss", "Beatrix Potter", "Eric Carle"], answer: 1, exp: "Theodor Seuss Geisel wrote under the famous pen name Dr. Seuss." },
+                    { q: "What is the main character in a story called?", options: ["Narrator", "Protagonist", "Setting", "Author"], answer: 1, exp: "The protagonist is the central character around whom the plot revolves." },
+                    { q: "In 'The Wizard of Oz', what color is the road Dorothy follows?", options: ["Red", "Blue", "Yellow", "Emerald"], answer: 2, exp: "Dorothy follows the Yellow Brick Road to the Emerald City." },
+                    { q: "Which word is an adjective in: 'The brave knight rode a fast horse'?", options: ["knight", "rode", "brave", "horse"], answer: 2, exp: "'Brave' (and 'fast') are adjectives because they describe nouns." },
+                    { q: "What are the two words that make up the contraction 'don't'?", options: ["do not", "did not", "does not", "do never"], answer: 0, exp: "'Don't' is a contraction of 'do' and 'not'." }
+                ],
+                middle: [
+                    { q: "Giving human traits to non-human objects is called:", options: ["Simile", "Metaphor", "Personification", "Alliteration"], answer: 2, exp: "Personification attributes human actions or feelings to objects or animals (e.g., 'the wind whispered')." },
+                    { q: "Who wrote the fantasy series 'The Chronicles of Narnia'?", options: ["J.R.R. Tolkien", "C.S. Lewis", "Rick Riordan", "Suzanne Collins"], answer: 1, exp: "C.S. Lewis wrote all seven books in The Chronicles of Narnia." },
+                    { q: "What is a comparison using 'like' or 'as' called?", options: ["Metaphor", "Simile", "Hyperbole", "Onomatopoeia"], answer: 1, exp: "A simile explicitly compares two things using 'like' or 'as' (e.g., 'as brave as a lion')." },
+                    { q: "In 'The Outsiders' by S.E. Hinton, who is the narrator?", options: ["Johnny Cade", "Dallas Winston", "Ponyboy Curtis", "Sodapop Curtis"], answer: 2, exp: "Ponyboy Curtis narrates the novel as an essay for his English class." },
+                    { q: "How many syllables are in a traditional Japanese Haiku poem?", options: ["12 (4-4-4)", "14 (4-6-4)", "17 (5-7-5)", "20 (6-8-6)"], answer: 2, exp: "A haiku consists of three lines with a 5-7-5 syllable structure." },
+                    { q: "What is the turning point of highest tension in a story's plot?", options: ["Exposition", "Rising Action", "Climax", "Resolution"], answer: 2, exp: "The climax is the peak of conflict where the main problem reaches its turning point." },
+                    { q: "Who wrote 'The Hobbit' and 'The Lord of the Rings'?", options: ["J.R.R. Tolkien", "George R.R. Martin", "C.S. Lewis", "Neil Gaiman"], answer: 0, exp: "J.R.R. Tolkien created Middle-earth and wrote both classic fantasy works." },
+                    { q: "Words like 'buzz', 'crash', and 'sizzle' are examples of:", options: ["Oxymoron", "Onomatopoeia", "Allusion", "Irony"], answer: 1, exp: "Onomatopoeia refers to words that phonetically imitate the sounds they describe." }
+                ],
+                high: [
+                    { q: "Who wrote the tragedy 'Macbeth' and 'Romeo and Juliet'?", options: ["Christopher Marlowe", "William Shakespeare", "Charles Dickens", "Geoffrey Chaucer"], answer: 1, exp: "William Shakespeare wrote 37+ plays and 154 sonnets during the Elizabethan/Jacobean eras." },
+                    { q: "In George Orwell's '1984', what is the name of the totalitarian ruler?", options: ["Big Brother", "The Party Boss", "Napoleon", "O'Brien"], answer: 0, exp: "'Big Brother is watching you' is the iconic slogan of Oceania's regime." },
+                    { q: "Who is the author of 'To Kill a Mockingbird'?", options: ["Toni Morrison", "Harper Lee", "Maya Angelou", "John Steinbeck"], answer: 1, exp: "Harper Lee published this Pulitzer Prize-winning novel in 1960." },
+                    { q: "What is a 14-line poem written in iambic pentameter called?", options: ["Ode", "Elegy", "Sonnet", "Ballad"], answer: 2, exp: "Both Shakespearean and Petrarchan sonnets contain 14 lines in iambic pentameter." },
+                    { q: "In F. Scott Fitzgerald's 'The Great Gatsby', what does the green light symbolize?", options: ["Environmentalism", "Gatsby's hopes and the American Dream", "Jealousy of Tom", "Wealth of New York"], answer: 1, exp: "The green light across the bay represents Gatsby's longing for Daisy and an elusive dream." },
+                    { q: "Which epic poem by Homer recounts Odysseus's ten-year journey home?", options: ["The Iliad", "The Aeneid", "The Odyssey", "Beowulf"], answer: 2, exp: "The Odyssey follows Odysseus's voyage back to Ithaca after the Trojan War." },
+                    { q: "What literary device occurs when the audience knows a secret that characters do not?", options: ["Verbal Irony", "Situational Irony", "Dramatic Irony", "Foreshadowing"], answer: 2, exp: "Dramatic irony builds suspense because the audience possesses crucial knowledge." },
+                    { q: "Who wrote 'Pride and Prejudice'?", options: ["Charlotte Brontë", "Emily Brontë", "Jane Austen", "Mary Shelley"], answer: 2, exp: "Jane Austen published Pride and Prejudice in 1813." }
+                ]
+            }
+        };
+
+        /* ==========================================================================
+           3. APPLICATION STATE & DOM REFERENCES
+           ========================================================================== */
+        let state = {
+            selectedSubject: 'science',
+            selectedDifficulty: 'middle',
+            questions: [],
+            currentIndex: 0,
+            score: 0,
+            streak: 0,
+            bestStreak: 0,
+            correctCount: 0,
+            timeLeft: 20,
+            timerInterval: null,
+            answered: false
+        };
+
+        const SECONDS_PER_QUESTION = 20;
+
+        /* ==========================================================================
+           4. INITIALIZATION & MENU RENDERING
+           ========================================================================== */
+        function initApp() {
+            renderSubjectCards();
+            renderDifficultyCards();
+        }
+
+        function renderSubjectCards() {
+            const grid = document.getElementById('subject-grid');
+            grid.innerHTML = SUBJECTS.map(sub => {
+                const isSelected = state.selectedSubject === sub.id;
+                return `
+                    <button type="button" onclick="selectSubject('${sub.id}')"
+                        class="subject-card ${isSelected ? `selected ring-2 ring-indigo-500 bg-indigo-50/70 border-indigo-400` : 'bg-white hover:bg-slate-50 border-slate-200'}
+                        border-2 rounded-2xl p-4 flex flex-col items-center justify-center text-center gap-2.5 focus:outline-none">
+                        <div class="w-12 h-12 rounded-2xl ${sub.bg} ${sub.text} flex items-center justify-center text-xl shadow-sm">
+                            <i class="fa-solid ${sub.icon}"></i>
+                        </div>
+                        <span class="font-display font-bold text-sm sm:text-base text-slate-800">${sub.name}</span>
+                    </button>
+                `;
+            }).join('');
+        }
+
+        function renderDifficultyCards() {
+            const grid = document.getElementById('difficulty-grid');
+            grid.innerHTML = DIFFICULTIES.map(diff => {
+                const isSelected = state.selectedDifficulty === diff.id;
+                return `
+                    <button type="button" onclick="selectDifficulty('${diff.id}')"
+                        class="subject-card ${isSelected ? 'selected ring-2 ring-indigo-500 bg-indigo-50/70 border-indigo-400' : 'bg-white hover:bg-slate-50 border-slate-200'}
+                        border-2 rounded-2xl p-3.5 flex items-center gap-3.5 text-left focus:outline-none">
+                        <div class="w-11 h-11 rounded-xl ${diff.badge} flex items-center justify-center text-lg flex-shrink-0">
+                            <i class="fa-solid ${diff.icon}"></i>
+                        </div>
+                        <div>
+                            <div class="font-display font-bold text-slate-800 text-base leading-tight">${diff.name}</div>
+                            <div class="text-xs font-semibold text-slate-400 mt-0.5">${diff.grades}</div>
+                        </div>
+                    </button>
+                `;
+            }).join('');
+        }
+
+        function selectSubject(id) {
+            sfx.click();
+            state.selectedSubject = id;
+            renderSubjectCards();
+        }
+
+        function selectDifficulty(id) {
+            sfx.click();
+            state.selectedDifficulty = id;
+            renderDifficultyCards();
+        }
+
+        function toggleSound() {
+            sfx.enabled = !sfx.enabled;
+            const icon = document.getElementById('sound-icon');
+            const label = document.getElementById('sound-label');
+            if (sfx.enabled) {
+                sfx.click();
+                icon.className = 'fa-solid fa-volume-high text-indigo-600';
+                label.textContent = 'Sound On';
+            } else {
+                icon.className = 'fa-solid fa-volume-xmark text-slate-400';
+                label.textContent = 'Muted';
+            }
+        }
+
+        /* ==========================================================================
+           5. QUIZ GAMEPLAY FLOW
+           ========================================================================== */
+        function shuffleArray(array) {
+            const copy = [...array];
+            for (let i = copy.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [copy[i], copy[j]] = [copy[j], copy[i]];
+            }
+            return copy;
+        }
+
+        function startQuiz() {
+            sfx.click();
+            const rawQuestions = QUESTION_BANK[state.selectedSubject]?.[state.selectedDifficulty];
+            if (!rawQuestions || rawQuestions.length === 0) {
+                const toast = document.getElementById('setup-toast');
+                toast.textContent = "Please choose a valid subject and grade level.";
+                toast.classList.remove('hidden');
+                return;
+            }
+
+            // Shuffle question order & shuffle each question's options cleanly
+            state.questions = shuffleArray(rawQuestions).map(item => {
+                const indexedOptions = item.options.map((text, idx) => ({ text, isCorrect: idx === item.answer }));
+                const shuffledOptions = shuffleArray(indexedOptions);
+                return {
+                    q: item.q,
+                    options: shuffledOptions.map(o => o.text),
+                    answer: shuffledOptions.findIndex(o => o.isCorrect),
+                    exp: item.exp
+                };
+            });
+
+            state.currentIndex = 0;
+            state.score = 0;
+            state.streak = 0;
+            state.bestStreak = 0;
+            state.correctCount = 0;
+
+            // Update HUD Subject Info
+            const subObj = SUBJECTS.find(s => s.id === state.selectedSubject);
+            const diffObj = DIFFICULTIES.find(d => d.id === state.selectedDifficulty);
+            const hudIcon = document.getElementById('hud-subject-icon');
+            hudIcon.className = `w-10 h-10 rounded-xl ${subObj.bg} ${subObj.text} flex items-center justify-center text-lg`;
+            hudIcon.innerHTML = `<i class="fa-solid ${subObj.icon}"></i>`;
+            document.getElementById('hud-subject-name').textContent = subObj.name;
+            document.getElementById('hud-difficulty-name').textContent = `${diffObj.name} (${diffObj.grades})`;
+
+            // Switch Screens
+            document.getElementById('setup-screen').classList.add('hidden');
+            document.getElementById('summary-screen').classList.add('hidden');
+            document.getElementById('quiz-screen').classList.remove('hidden');
+            document.getElementById('quiz-screen').classList.add('flex');
+            document.getElementById('home-nav-btn').classList.remove('hidden');
+
+            updateHUDStats();
+            loadQuestion();
+        }
+
+        function loadQuestion() {
+            clearInterval(state.timerInterval);
+            state.answered = false;
+            state.timeLeft = SECONDS_PER_QUESTION;
+
+            const currentQ = state.questions[state.currentIndex];
+            const total = state.questions.length;
+
+            // Progress & Counter
+            document.getElementById('question-counter').textContent = `Question ${state.currentIndex + 1} of ${total}`;
+            document.getElementById('progress-bar').style.width = `${((state.currentIndex + 1) / total) * 100}%`;
+            document.getElementById('question-text').textContent = currentQ.q;
+
+            // Hide Feedback Drawer
+            const feedbackBox = document.getElementById('feedback-box');
+            feedbackBox.classList.add('hidden');
+
+            // Render Option Buttons (A, B, C, D)
+            const letters = ['A', 'B', 'C', 'D'];
+            const optionsGrid = document.getElementById('options-grid');
+            optionsGrid.innerHTML = currentQ.options.map((optText, idx) => `
+                <button type="button" id="opt-btn-${idx}" onclick="handleAnswer(${idx})"
+                    class="option-btn w-full text-left bg-white border-2 border-slate-200 rounded-2xl p-4 flex items-center gap-3.5 group focus:outline-none">
+                    <span id="opt-badge-${idx}" class="w-9 h-9 rounded-xl bg-slate-100 group-hover:bg-indigo-600 group-hover:text-white text-slate-700 font-display font-bold flex items-center justify-center flex-shrink-0 transition-colors">
+                        ${letters[idx]}
+                    </span>
+                    <span class="font-semibold text-slate-700 text-base leading-snug">${optText}</span>
+                </button>
+            `).join('');
+
+            // Animate card entry
+            const qCard = document.getElementById('question-card');
+            qCard.classList.remove('animate-pop');
+            void qCard.offsetWidth; // trigger reflow
+            qCard.classList.add('animate-pop');
+
+            startTimer();
+        }
+
+        function startTimer() {
+            updateTimerUI();
+            state.timerInterval = setInterval(() => {
+                state.timeLeft--;
+                updateTimerUI();
+
+                if (state.timeLeft <= 5 && state.timeLeft > 0) {
+                    sfx.tick();
+                }
+
+                if (state.timeLeft <= 0) {
+                    clearInterval(state.timerInterval);
+                    handleTimeout();
+                }
+            }, 1000);
+        }
+
+        function updateTimerUI() {
+            const timerEl = document.getElementById('hud-timer');
+            const timerBox = document.getElementById('timer-box');
+            timerEl.textContent = `${state.timeLeft}s`;
+
+            if (state.timeLeft <= 5) {
+                timerBox.className = 'bg-rose-50 border-2 border-rose-300 text-rose-600 px-3.5 py-1.5 rounded-xl flex items-center gap-2 animate-pulse';
+            } else if (state.timeLeft <= 10) {
+                timerBox.className = 'bg-amber-50 border-2 border-amber-300 text-amber-700 px-3.5 py-1.5 rounded-xl flex items-center gap-2';
+            } else {
+                timerBox.className = 'bg-emerald-50 border-2 border-emerald-200 text-emerald-700 px-3.5 py-1.5 rounded-xl flex items-center gap-2';
+            }
+        }
+
+        function handleAnswer(selectedIndex) {
+            if (state.answered) return;
+            state.answered = true;
+            clearInterval(state.timerInterval);
+
+            const currentQ = state.questions[state.currentIndex];
+            const isCorrect = selectedIndex === currentQ.answer;
+
+            // Lock all buttons
+            for (let i = 0; i < currentQ.options.length; i++) {
+                const btn = document.getElementById(`opt-btn-${i}`);
+                const badge = document.getElementById(`opt-badge-${i}`);
+                btn.disabled = true;
+
+                if (i === currentQ.answer) {
+                    btn.className = 'w-full text-left bg-emerald-50 border-2 border-emerald-500 rounded-2xl p-4 flex items-center gap-3.5 shadow-sm';
+                    badge.className = 'w-9 h-9 rounded-xl bg-emerald-500 text-white font-display font-bold flex items-center justify-center flex-shrink-0';
+                    badge.innerHTML = '<i class="fa-solid fa-check"></i>';
+                } else if (i === selectedIndex && !isCorrect) {
+                    btn.className = 'w-full text-left bg-rose-50 border-2 border-rose-500 rounded-2xl p-4 flex items-center gap-3.5 animate-shake';
+                    badge.className = 'w-9 h-9 rounded-xl bg-rose-500 text-white font-display font-bold flex items-center justify-center flex-shrink-0';
+                    badge.innerHTML = '<i class="fa-solid fa-xmark"></i>';
+                } else {
+                    btn.classList.add('opacity-50');
+                }
+            }
+
+            if (isCorrect) {
+                sfx.correct();
+                state.correctCount++;
+                state.streak++;
+                if (state.streak > state.bestStreak) state.bestStreak = state.streak;
+
+                // Calculate Points: Base 100 + Speed Bonus (up to 50) + Streak Bonus
+                const speedBonus = state.timeLeft * 2;
+                const streakBonus = state.streak > 1 ? (state.streak - 1) * 15 : 0;
+                const earned = 100 + speedBonus + streakBonus;
+                state.score += earned;
+
+                showFeedback(true, `Correct! +${earned} pts`, currentQ.exp, streakBonus > 0 ? `${state.streak}x Streak!` : '');
+            } else {
+                sfx.wrong();
+                state.streak = 0;
+                showFeedback(false, 'Not quite right!', currentQ.exp, '');
+            }
+
+            updateHUDStats();
+        }
+
+        function handleTimeout() {
+            if (state.answered) return;
+            state.answered = true;
+            sfx.wrong();
+            state.streak = 0;
+
+            const currentQ = state.questions[state.currentIndex];
+            for (let i = 0; i < currentQ.options.length; i++) {
+                const btn = document.getElementById(`opt-btn-${i}`);
+                const badge = document.getElementById(`opt-badge-${i}`);
+                btn.disabled = true;
+
+                if (i === currentQ.answer) {
+                    btn.className = 'w-full text-left bg-emerald-50 border-2 border-emerald-500 rounded-2xl p-4 flex items-center gap-3.5';
+                    badge.className = 'w-9 h-9 rounded-xl bg-emerald-500 text-white font-display font-bold flex items-center justify-center flex-shrink-0';
+                    badge.innerHTML = '<i class="fa-solid fa-check"></i>';
+                } else {
+                    btn.classList.add('opacity-50');
+                }
+            }
+
+            updateHUDStats();
+            showFeedback(false, "Time's Up!", currentQ.exp, '');
+        }
+
+        function showFeedback(isPositive, title, explanation, badgeText) {
+            const box = document.getElementById('feedback-box');
+            const icon = document.getElementById('feedback-icon');
+            const titleEl = document.getElementById('feedback-title');
+            const expEl = document.getElementById('feedback-explanation');
+            const pointsBadge = document.getElementById('feedback-points');
+            const nextBtnText = document.getElementById('next-btn-text');
+
+            box.classList.remove('hidden', 'bg-emerald-50', 'border-emerald-200', 'text-emerald-900', 'bg-rose-50', 'border-rose-200', 'text-rose-900');
+
+            if (isPositive) {
+                box.classList.add('bg-emerald-50', 'border-emerald-200', 'text-emerald-900');
+                icon.className = 'w-10 h-10 rounded-xl bg-emerald-500 text-white flex-shrink-0 flex items-center justify-center text-xl mt-0.5';
+                icon.innerHTML = '<i class="fa-solid fa-circle-check"></i>';
+            } else {
+                box.classList.add('bg-rose-50', 'border-rose-200', 'text-rose-900');
+                icon.className = 'w-10 h-10 rounded-xl bg-rose-500 text-white flex-shrink-0 flex items-center justify-center text-xl mt-0.5';
+                icon.innerHTML = '<i class="fa-solid fa-lightbulb"></i>';
+            }
+
+            titleEl.textContent = title;
+            expEl.textContent = explanation;
+
+            if (badgeText) {
+                pointsBadge.textContent = badgeText;
+                pointsBadge.classList.remove('hidden');
+            } else {
+                pointsBadge.classList.add('hidden');
+            }
+
+            const isLast = state.currentIndex === state.questions.length - 1;
+            nextBtnText.textContent = isLast ? 'See Results' : 'Next Question';
+        }
+
+        function updateHUDStats() {
+            document.getElementById('hud-score').textContent = state.score.toLocaleString();
+            document.getElementById('hud-streak').textContent = state.streak;
+
+            const streakBadge = document.getElementById('streak-badge');
+            if (state.streak >= 2) {
+                streakBadge.classList.add('scale-105', 'ring-2', 'ring-orange-400');
+            } else {
+                streakBadge.classList.remove('scale-105', 'ring-2', 'ring-orange-400');
+            }
+        }
+
+        function nextQuestion() {
+            sfx.click();
+            if (state.currentIndex < state.questions.length - 1) {
+                state.currentIndex++;
+                loadQuestion();
+            } else {
+                showSummary();
+            }
+        }
+
+        /* ==========================================================================
+           6. SUMMARY REPORT CARD & CELEBRATION CONFETTI
+           ========================================================================== */
+        function showSummary() {
+            clearInterval(state.timerInterval);
+            document.getElementById('quiz-screen').classList.add('hidden');
+            document.getElementById('quiz-screen').classList.remove('flex');
+            document.getElementById('summary-screen').classList.remove('hidden');
+
+            const total = state.questions.length;
+            const accuracy = Math.round((state.correctCount / total) * 100);
+            const subObj = SUBJECTS.find(s => s.id === state.selectedSubject);
+            const diffObj = DIFFICULTIES.find(d => d.id === state.selectedDifficulty);
+
+            // Determine Letter Grade & Headline
+            let grade = 'C';
+            let headline = 'Good Effort! Keep Practicing!';
+            let badgeGradient = 'from-amber-400 to-orange-500';
+
+            if (accuracy >= 95) {
+                grade = 'A+';
+                headline = 'Phenomenal Mastery!';
+                badgeGradient = 'from-emerald-400 to-teal-600';
+                sfx.fanfare();
+                launchConfetti();
+            } else if (accuracy >= 85) {
+                grade = 'A';
+                headline = 'Outstanding Work!';
+                badgeGradient = 'from-emerald-400 to-green-600';
+                sfx.fanfare();
+                launchConfetti();
+            } else if (accuracy >= 75) {
+                grade = 'B';
+                headline = 'Great Job, Scholar!';
+                badgeGradient = 'from-blue-500 to-indigo-600';
+                sfx.fanfare();
+            } else if (accuracy >= 60) {
+                grade = 'C';
+                headline = 'Solid Effort! Try Again to Level Up!';
+                badgeGradient = 'from-amber-400 to-orange-500';
+            } else {
+                grade = 'D';
+                headline = 'Great Warm-Up! Review & Retry!';
+                badgeGradient = 'from-rose-400 to-red-500';
+            }
+
+            document.getElementById('summary-headline').textContent = headline;
+            document.getElementById('summary-subtext').textContent = `Completed ${subObj.name} — ${diffObj.name} Level`;
+            document.getElementById('summary-grade').textContent = grade;
+
+            const gradeBadge = document.getElementById('grade-badge');
+            gradeBadge.className = `w-28 h-28 rounded-3xl bg-gradient-to-br ${badgeGradient} text-white flex flex-col items-center justify-center shadow-lg transform -rotate-2 border-4 border-white`;
+
+            document.getElementById('summary-score').textContent = state.score.toLocaleString();
+            document.getElementById('summary-accuracy').textContent = `${accuracy}%`;
+            document.getElementById('summary-correct').textContent = `${state.correctCount}/${total}`;
+            document.getElementById('summary-streak').textContent = state.bestStreak;
+        }
+
+        function replayQuiz() {
+            startQuiz();
+        }
+
+        function returnToMenu() {
+            sfx.click();
+            clearInterval(state.timerInterval);
+            document.getElementById('quiz-screen').classList.add('hidden');
+            document.getElementById('quiz-screen').classList.remove('flex');
+            document.getElementById('summary-screen').classList.add('hidden');
+            document.getElementById('home-nav-btn').classList.add('hidden');
+            document.getElementById('setup-screen').classList.remove('hidden');
+        }
+
+        /* Lightweight Canvas Confetti for High Scores */
+        function launchConfetti() {
+            const canvas = document.getElementById('confetti-canvas');
+            const ctx = canvas.getContext('2d');
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+
+            const colors = ['#6366F1', '#10B981', '#F59E0B', '#EC4899', '#3B82F6'];
+            const particles = Array.from({ length: 85 }, () => ({
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height - canvas.height,
+                r: Math.random() * 6 + 4,
+                d: Math.random() * 4 + 2,
+                color: colors[Math.floor(Math.random() * colors.length)],
+                tilt: Math.random() * 10 - 5,
+                tiltAngle: 0,
+                tiltSpeed: Math.random() * 0.08 + 0.04
+            }));
+
+            let frame = 0;
+            function draw() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                particles.forEach(p => {
+                    p.tiltAngle += p.tiltSpeed;
+                    p.y += p.d;
+                    p.x += Math.sin(p.tiltAngle) * 1.5;
+
+                    ctx.beginPath();
+                    ctx.fillStyle = p.color;
+                    ctx.fillRect(p.x, p.y, p.r * 1.4, p.r);
+                });
+
+                frame++;
+                if (frame < 160) {
+                    requestAnimationFrame(draw);
+                } else {
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                }
+            }
+            draw();
+        }
+
+        window.addEventListener('resize', () => {
+            const canvas = document.getElementById('confetti-canvas');
+            if (canvas) {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+            }
+        });
+
+        // Initialize on load
+        window.onload = initApp;
+    </script>
+    </div>
+  </div>
+</div>
+
+<div class="footer">
+  <p>Contact No: +639928891337 / +639973461426</p>
+  <p>Contact Email: joseph26adams@gmail.com / emmanuelurban154@gmail.com</p>
+  <p>Address: Calamba Laguna Parian / Halang</p>
+  <p>© 2026 All Rights Reserve | Explore and Learn</p>
+</div>
+
+</body>
+</html>
